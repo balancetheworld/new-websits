@@ -1,0 +1,30 @@
+/* 定义shake晃动动画（全局可复用） */
+@keyframes shake1 {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-2px); /* 上移2px */
+  }
+  50% {
+    transform: translateY(2px);  /* 下移2px */
+  }
+  75% {
+    transform: translateY(-1px); /* 微微上移 */
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* 定义hover触发动画的类（Tailwind风格命名，便于复用） */
+.hover-animate-shake:hover {
+  animation: shake1 1s ease-out; /* 动画时长1秒，缓出效果 */
+  /* 可选：添加动画只执行一次 */
+  animation-iteration-count: 1;
+}
+
+/* 可选：如果需要直接触发动画（非hover），新增类 */
+.animate-shake {
+  animation: shake1 1s ease-out;
+}

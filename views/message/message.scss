@@ -1,0 +1,19 @@
+/* 找到包含 overflow-y-auto 的元素，给它添加一个类名（如 custom-scrollbar） */
+.custom-scrollbar {
+  /* 隐藏原生滚动条（仅视觉隐藏，不影响功能） */
+  scrollbar-width: thin; /* Firefox 控制滚动条宽度 */
+}
+
+/* Chrome、Edge、Safari 等 WebKit 内核浏览器 */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px; /* 滚动条宽度 */
+}
+
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 10px; /* 滑块圆角 */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #6d6d6d; /* 滑块hover时颜色 */
+}

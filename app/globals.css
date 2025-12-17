@@ -1,26 +1,248 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* 黑白灰极简主题 - 基于 OKLCH 颜色空间（明度/色度/色相），色相统一设为 0（无彩色）保证纯黑白灰 */
+  --background: oklch(98% 0 0); /* 页面背景：极浅灰（接近纯白），提升阅读舒适度 */
+  --foreground: oklch(12% 0 0); /* 主文本色：深灰（接近纯黑），保证文字清晰易读 */
+  --card: oklch(100% 0 0);      /* 卡片背景：纯白，与页面背景形成细微区分 */
+  --card-foreground: oklch(15% 0 0); /* 卡片文本色：深灰，比主文本稍浅，层级更清晰 */
+  --popover: oklch(100% 0 0);   /* 弹窗背景：纯白，突出弹窗内容 */
+  --popover-foreground: oklch(12% 0 0); /* 弹窗文本色：同主文本，保证一致性 */
+  --primary: oklch(25% 0 0);  
+  --primary-foreground: oklch(100% 0 0); /* 主色文本：纯白，与主色形成高对比度 */
+  --secondary: oklch(90% 0 0);  /* 次要色：浅灰，用于次要按钮/辅助元素 */
+  --secondary-foreground: oklch(15% 0 0); /* 次要色文本：深灰，保证可读性 */
+  --muted: oklch(85% 0 0);      /* 弱化色：浅灰，用于禁用/占位/次要信息 */
+  --muted-foreground: oklch(45% 0 0); /* 弱化文本色：中灰，与弱化背景形成适中对比 */
+  --accent: oklch(70% 0 0);     /* 强调色：中浅灰，用于hover/选中状态，不抢视觉焦点 */
+  --accent-foreground: oklch(12% 0 0); /* 强调色文本：同主文本，保证一致性 */
+  --destructive: oklch(20% 0 0); /* 危险色：深灰（黑白灰主题下替代红色），用于删除/错误提示 */
+  --destructive-foreground: oklch(100% 0 0); /* 危险色文本：纯白，高对比度 */
+  --border: oklch(88% 0 0);     /* 边框色：极浅灰，弱化边框视觉感但保留分隔作用 */
+  --input: oklch(95% 0 0);      /* 输入框背景：超浅灰，与页面背景区分 */
+  --ring: oklch(25% 0 0);       /* 焦点环色：同主色，突出交互焦点 */
+  /* 图表色：保留轻微色相区分（极简黑白灰下的弱色彩），保证图表系列可识别 */
+  --chart-1: oklch(30% 0 0);    /* 图表1：深灰 */
+  --chart-2: oklch(45% 0 0);    /* 图表2：中灰 */
+  --chart-3: oklch(60% 0 0);    /* 图表3：中浅灰 */
+  --chart-4: oklch(75% 0 0);    /* 图表4：浅灰 */
+  --chart-5: oklch(90% 0 0);    /* 图表5：极浅灰 */
+  --radius: 0.625rem;           /* 圆角基准值：保持原配置，统一视觉风格 */
+  /* 侧边栏配色：黑白灰层级区分 */
+  --sidebar: oklch(99% 0 0);    /* 侧边栏背景：接近纯白 */
+  --sidebar-foreground: oklch(12% 0 0); /* 侧边栏文本：同主文本 */
+  --sidebar-primary: oklch(25% 0 0); /* 侧边栏主色：同全局主色 */
+  --sidebar-primary-foreground: oklch(100% 0 0); /* 侧边栏主色文本：纯白 */
+  --sidebar-accent: oklch(90% 0 0); /* 侧边栏强调色：同全局次要色 */
+  --sidebar-accent-foreground: oklch(15% 0 0); /* 侧边栏强调文本：深灰 */
+  --sidebar-border: oklch(88% 0 0); /* 侧边栏边框：同全局边框色 */
+  --sidebar-ring: oklch(70% 0 0); /* 侧边栏焦点环：同全局强调色 */
+}
+
+.dark {
+  /* 核心基调：纯黑背景 + 粉系主色 + 青蓝辅助色 */
+  --background: oklch(0.05 0 0);        /* 页面背景：极致纯黑（替代原浅灰蓝），突出主色 */
+  --foreground: oklch(0.98 0.005 0);    /* 基础文本：极浅白，保证黑背景下可读性 */
+  
+  /* 卡片/弹窗：黑灰基底，与背景区分且不抢主色视觉 */
+  --card: oklch(0.08 0.002 0);          /* 卡片背景：深黑灰，比页面背景稍亮 */
+  --card-foreground: oklch(0.95 0.005 0);/* 卡片文本：浅白，与卡片背景高对比 */
+  --popover: oklch(0.08 0.002 0);       /* 弹窗背景：同卡片，保持一致性 */
+  --popover-foreground: oklch(0.95 0.005 0); /* 弹窗文本：同卡片文本 */
+
+  /* 主色系：基于 rgb(211, 161, 190) 转换的粉调，含深浅变体 */
+  --primary: oklch(86.035% 0.06606 338.334);      /* 主色：核心粉色（对应 rgb(211,161,190)），明度62%适配暗黑 */
+  --primary-foreground: oklch(0% 0 0);/* 主色文本：纯黑，与粉色形成强对比 */
+  --secondary: oklch(0.5 0.15 340);     /* 次要色：深一度的粉色（主色加深），用于次要按钮 */
+  --secondary-foreground: oklch(0.98 0 0); /* 次要色文本：纯白，保证可读性 */
+
+  /* 弱化色：低饱和粉灰，用于次要信息/占位 */
+  --muted: oklch(0.2 0.05 340);         /* 弱化背景：暗粉灰，不突兀 */
+  --muted-foreground: oklch(0.75 0.08 340); /* 弱化文本：浅粉灰，与弱化背景适中对比 */
+
+  /* 辅助色：基于 rgb(19,246,246) 的青蓝色，用于强调/交互反馈 */
+  --accent: oklch(0.85 0.18 190);       /* 强调色：核心青蓝（对应 rgb(19,246,246)），提亮视觉焦点 */
+  --accent-foreground: oklch(0.05 0 0); /* 强调色文本：纯黑，与青蓝高对比 */
+
+  /* 危险色：低饱和红粉，适配整体暗黑粉调风格 */
+  --destructive: oklch(0.45 0.2 350);   /* 危险色：暗玫红，不刺眼但明确警示 */
+  --destructive-foreground: oklch(0.98 0 0); /* 危险色文本：纯白，保证辨识度 */
+
+  /* 边框/输入框/焦点环：粉调边框，统一风格 */
+  --border: oklch(0.2 0.08 340);        /* 边框色：暗粉灰，弱化边框但保留分隔 */
+  --input: oklch(0.1 0.05 340);         /* 输入框背景：深粉黑，与页面背景区分 */
+  --ring: oklch(0.7 0.15 340);          /* 焦点环色：亮粉色，突出交互焦点 */
+
+  /* 图表色：粉+青蓝系渐变，适配整体主题 */
+  --chart-1: oklch(0.62 0.12 340);      /* 图表1：核心粉色（同主色） */
+  --chart-2: oklch(0.75 0.15 340);      /* 图表2：浅粉色 */
+  --chart-3: oklch(0.85 0.18 190);      /* 图表3：核心青蓝（同辅助色） */
+  --chart-4: oklch(0.7 0.15 190);       /* 图表4：深青蓝 */
+  --chart-5: oklch(0.5 0.1 340);        /* 图表5：暗粉色 */
+
+  /* 侧边栏：黑+粉系，与整体风格统一 */
+  --sidebar: oklch(0.06 0 0);           /* 侧边栏背景：超深黑 */
+  --sidebar-foreground: oklch(0.98 0.005 0); /* 侧边栏文本：极浅白 */
+  --sidebar-primary: oklch(0.62 0.12 340); /* 侧边栏主色：核心粉色 */
+  --sidebar-primary-foreground: oklch(0.05 0 0); /* 侧边栏主色文本：纯黑 */
+  --sidebar-accent: oklch(0.85 0.18 190); /* 侧边栏强调色：核心青蓝 */
+  --sidebar-accent-foreground: oklch(0.05 0 0); /* 侧边栏强调文本：纯黑 */
+  --sidebar-border: oklch(0.2 0.08 340); /* 侧边栏边框：暗粉灰（同全局边框） */
+  --sidebar-ring: oklch(0.7 0.15 340);  /* 侧边栏焦点环：亮粉色（同全局焦点环） */
 }
 
 @theme inline {
+  --font-sans: "Geist", "Geist Fallback";
+  --font-mono: "Geist Mono", "Geist Mono Fallback";
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Smooth scroll behavior for better UX */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Remove default focus styles and use custom ring */
+  input,
+  textarea,
+  button {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Added sway animation for sticky notes on page load */
+@layer utilities {
+  @keyframes sway {
+    0% {
+      transform: rotate(-30deg);
+      opacity: 0;
+    }
+    50% {
+      transform: rotate(-30deg);
+      opacity: 1;
+    }
+    75% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(0deg);
+      opacity: 1;
+    }
+  }
+
+  @supports (animation: sway) {
+    .animate-sway {
+      animation: sway 0.8s ease-out;
+      transform-origin: top center;
+    }
+  }
 }
+
+@font-face {
+  font-family: 'CustomFont'; /* 自定义字体名（保持和组件内引用一致） */
+  src: url('/fonts/ComicNeue-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 全局字体复用类（全项目可直接用 .font-custom） */
+.font-custom {
+  font-family: 'CustomFont', cursive;
+  /* letter-spacing: 0.08em; 如需启用，去掉注释即可 */
+}
+
+/* 全局禁用所有元素的 focus outline */
+*:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* 可选：如果是链接/其他元素，补充 */
+a:focus, 
+input:focus,
+button:focus-visible {
+  outline: none;
+}
+
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+/* ↓↓↓ 新增：弹出 + 上下晃动动画 ↓↓↓ */
+@layer utilities {
+  @keyframes popAndWobble {
+    0% {
+      opacity: 0;
+      transform: translateY(20px) scale(0.8);
+    }
+    40% {
+      opacity: 1;
+      transform: translateY(0) scale(1.05);
+    }
+    60% {
+      transform: translateY(-6px) scale(1);
+    }
+    75% {
+      transform: translateY(4px);
+    }
+    90% {
+      transform: translateY(-2px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .animate-pop-wobble {
+    animation: popAndWobble 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+}
+
+

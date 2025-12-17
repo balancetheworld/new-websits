@@ -1,0 +1,46 @@
+/* 定义shake晃动动画 */
+@keyframes shake {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-20px); 
+  }
+  50% {
+    transform: translateY(12px);  
+  }
+  75% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.components-animate-shake {
+  animation: shake 1.5s ease-out;
+}
+
+/* 2. 第二个按钮：延迟 0.5s */
+.components-animate-shake-delay-25 {
+  animation: shake 1.5s ease-in-out;
+  animation-iteration-count: 1;
+  animation-delay: 0.25s; /* 核心延迟 */
+  animation-fill-mode: both;
+}
+
+/* 3. 第三个按钮：延迟 1s */
+.components-animate-shake-delay-50 {
+  animation: shake 1.5s ease-in-out;
+  animation-iteration-count: 1;
+  animation-delay: 0.5s;
+  animation-fill-mode: both;
+}
+
+/* 4. 第四个按钮：延迟 1.5s */
+.components-animate-shake-delay-75 {
+  animation: shake 1.5s ease-in-out;
+  animation-iteration-count: 1;
+  animation-delay: 0.75s;
+  animation-fill-mode: both;
+}

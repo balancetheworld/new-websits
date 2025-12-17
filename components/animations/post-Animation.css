@@ -1,0 +1,37 @@
+.animated-box {
+  transform-origin: left top;
+}
+
+.animated-initial {
+  transform: rotate(30deg);
+}
+
+.animated-trigger {
+  animation: straighten 0.5s ease-out forwards,
+             post-shake 1.5s ease-in-out 0.5s forwards;
+}
+
+
+.animated-final {
+  transform: rotate(0deg);
+}
+
+@keyframes straighten {
+  0% { transform: rotate(30deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* 晃动动画 */
+@keyframes post-shake {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(6deg); }
+  40% { transform: rotate(-4deg); }
+  60% { transform: rotate(2deg); }
+  80% { transform: rotate(-2deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.dragging {
+  transform: rotate(5deg) !important;
+  transition: none !important;
+}
