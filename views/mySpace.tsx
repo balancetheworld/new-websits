@@ -82,7 +82,7 @@ export default function CoupleSpaceSection() {
                     Unlock
                   </button>
                 </div>
-                <div className=" absolute bottom-[-4] right-2 ">
+                <div className=" absolute bottom-[-4] right-2 hidden md:block ">
                   <Image
                     src="/images/myspace2.png"
                     alt="meow"

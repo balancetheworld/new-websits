@@ -7,7 +7,8 @@ import AboutSection from '@/views/aboutMe'
 import ExperienceSection from '@/views/ecperience-pc'
 import SmExperienceSection from '@/views/exprience-sm'
 import HomeSection from '@/views/home'
-import GuestbookSection from '@/views/message/message'
+import Message from '@/views/message-pc'
+import SmMessage from '@/views/message-sm'
 import CoupleSpaceSection from '@/views/mySpace'
 import ProjectsSection from '@/views/projects'
 
@@ -60,7 +61,7 @@ export default function Home() {
       <AboutSection />
       {isMobile ? <SmExperienceSection /> : <ExperienceSection />}
       <ProjectsSection />
-      <GuestbookSection />
+      {isMobile ? <SmMessage /> : <Message />}
       <CoupleSpaceSection />
 
       {!isMobile && <StickyNoteContainer />}

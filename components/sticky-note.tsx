@@ -133,7 +133,7 @@ export default function StickyNote({
       }}
       className={`w-[8vw] max-w-30 min-w-22 h-[8vw] max-h-30 min-h-22 p-4 flex items-center justify-center  animated-box pl-5
           ${isDragging ? 'dragging' : ''}
-          ${isVisible ? 'animated-trigger' : 'animated-initial'} `}
+          ${isVisible ? 'animated-trigger opacity-100 ' : 'animated-initial opacity-0'} `}
     >
       <div className="flex items-center justify-center w-full h-full text-xl font-custom">
         {children || initialText}

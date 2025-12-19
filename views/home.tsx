@@ -39,7 +39,7 @@ export default function HomeSection() {
                   {item}
                 </span>
               ))}
-              <span className="mr-20 pr-7"></span>
+              <span className="mr-18 pr-7 hidden md:inline-block"></span>
               {splitName(sayName).map((item, index) => (
                 <span
                   key={index}
@@ -59,15 +59,17 @@ export default function HomeSection() {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
           >
-            young and free                           will climb the hill
+            <span className="block sm:hidden"> young and free will climb the hill </span>
+            <span className="hidden md:block"> young and free                           will climb the hill</span>
           </pre>
         </div>
-        <div className="absolute ml-[-5] ">
+        <div className="absolute ml-[-5px] hidden md:block">
           <Image
-            src="/images/home.png" 
-            alt="homeye" 
-            width={200} 
-            height={300} 
+            src="/images/home.png"
+            alt="homeye"
+            width={200}
+            height={300}
+            priority={false}
           />
         </div>
       </section>

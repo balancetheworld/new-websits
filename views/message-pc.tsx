@@ -5,7 +5,7 @@ import { Heart, Send, ThumbsUp } from 'lucide-react'
 import { useState } from 'react'
 import { TbGhost2 } from 'react-icons/tb'
 import { useScrollAnimation } from '@/hooks/use-scroll-animation'
-import './message.scss'
+import './message-pc.scss'
 
 interface Message {
   id: number

@@ -8,7 +8,6 @@ import { LuSparkles } from 'react-icons/lu'
 import { RiHomeLine } from 'react-icons/ri'
 import { useTheme } from '@/contexts/theme-context'
 
-// 引入外部动画样式文件（路径根据你的实际目录调整）
 import '@/components/animations/shakeAnimation.css'
 
 interface NavigationBarProps {
@@ -54,7 +53,7 @@ export default function NavigationBar({ activeSection }: NavigationBarProps) {
         {/* 移动端展开菜单 */}
         <nav className="fixed bottom-0 left-0 right-0 z-[99999] z-50 bg-background/95 backdrop-blur-md border-t border-border px-4 py-3 pb-safe">
           <div className="flex justify-between items-center mb-4">
-            <span className="text-sm font-medium">菜单</span>
+            <span className="text-sm font-medium font-custom">菜单</span>
             <div className="flex gap-2">
               {mounted && (
                 <button
@@ -97,7 +96,7 @@ export default function NavigationBar({ activeSection }: NavigationBarProps) {
   return (
     <>
       {/* 桌面端导航栏 */}
-      <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-background/95 backdrop-blur-md  rounded-2xl px-4 py-3 shadow-[0_0_12px_rgba(0,0,0,0.08)] flex gap-4 items-center justify-center max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg hidden md:flex ">
+      <nav className="hidden md:block fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-background/95 backdrop-blur-md  rounded-2xl px-4 py-3 shadow-[0_0_12px_rgba(0,0,0,0.08)] flex gap-4 items-center justify-center max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg hidden md:flex ">
         {navItems.map((item) => {
           const Icon = item.icon
           return (
