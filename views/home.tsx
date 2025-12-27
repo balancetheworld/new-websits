@@ -9,7 +9,7 @@ export default function HomeSection() {
   }
 
   const sayHi = 'Hi, I\'m'
-  const sayName = 'Cattary'
+  const sayName = 'Caitria'
   return (
     <>
       <section

@@ -23,8 +23,8 @@ export default function GuestbookSection() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      name: 'Alice',
-      content: 'Great portfolio! Love your design sense.',
+      name: 'Mob',
+      content: '正在努力开发服务端中...',
       timestamp: '2 hours ago',
       likes: 3,
       dislikes: 0,
@@ -32,8 +32,8 @@ export default function GuestbookSection() {
     },
     {
       id: 2,
-      name: 'Bob',
-      content: 'Impressive projects. Would love to collaborate!',
+      name: 'JoJo',
+      content: '有什么建议和意见都可以私信告诉我哦，十分感谢！',
       timestamp: '1 day ago',
       likes: 1,
       dislikes: 0,

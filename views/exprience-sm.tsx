@@ -7,22 +7,22 @@ export default function ExperienceSection() {
 
   const experiences = [
     {
-      title: 'Senior Developer',
-      company: 'Tech Company',
-      period: '2023 - Present',
-      description: 'Leading frontend development and mentoring junior developers',
+      title: '什么！一觉醒来我变成女孩子了',
+      company: '重庆',
+      period: '2005-至今',
+      description: '要努力变成温柔而坚定的人哦',
     },
     {
-      title: 'Full Stack Engineer',
-      company: 'Startup',
+      title: '阿巴阿巴',
+      company: '喵~',
       period: '2021 - 2023',
-      description: 'Built scalable web applications and managed databases',
+      description: '真的不知道写什么开始胡言乱语了',
     },
     {
-      title: 'Junior Developer',
-      company: 'Digital Agency',
-      period: '2020 - 2021',
-      description: 'Started my career building responsive websites and web applications',
+      title: '成为大学牲',
+      company: '泥邮',
+      period: '2024-至今',
+      description: '怎么就开始学计算机了呢',
     },
   ]
 

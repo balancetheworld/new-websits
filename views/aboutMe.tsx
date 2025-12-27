@@ -71,7 +71,7 @@ export default function AboutSection() {
                 ref={buttonRef}
               >
                 <Button
-                  className={`mr-2 ${
+                  className={`mr-2 mb-1.5 ${
                     button3IsVisible ? 'components-animate-shake opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
                   }`}
                   action={{ type: 'external', url: 'https://github.com/balancetheworld' }}
@@ -80,7 +80,7 @@ export default function AboutSection() {
                 </Button>
               </span>
               <Button
-                className={`mr-2 ${
+                className={`mr-2 mb-1.5 ${
                   button3IsVisible ? 'components-animate-shake-delay-25 opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
                 }`}
                 action={{ type: 'external', url: 'https://github.com/balancetheworld' }}
@@ -88,7 +88,7 @@ export default function AboutSection() {
                 <LuMail strokeWidth={2} className="h-5 w-5" />
               </Button>
               <Button
-                className={`mr-2 ${
+                className={`mr-2 mb-1.5 ${
                   button3IsVisible ? 'components-animate-shake-delay-50 opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
                 }`}
                 action={{ type: 'external', url: 'https://mail.qq.com/cgi-bin/frame_html?sid=nCJoFotlfB8k20wl&r=2c6af03f94dd95d55a331910b35cd4ea&lang=zh' }}
@@ -96,7 +96,7 @@ export default function AboutSection() {
                 <RiQqFill strokeWidth={2} className="h-5 w-5" />
               </Button>
               <Button
-                className={`mr-2 ${
+                className={`mr-2  ${
                   button3IsVisible ? 'components-animate-shake-delay-75 opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
                 }`}
                 action={{ type: 'external', url: 'https://github.com/snowykami' }}

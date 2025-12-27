@@ -13,34 +13,34 @@ function Experience() {
   // 1. 先定义数据
   const EXList = useMemo<ExperienceItem[]>(() => [
     {
-      time: '2005-12-14',
-      name: 'Birthday',
-      introduce: 'When I saw the sun for the first time.',
+      time: '11-45-14',
+      name: '成为小狗算经历吗',
+      introduce: '成为单身狗算经历吗',
     },
     {
-      time: '2005-12-14',
-      name: 'Birthday',
-      introduce: 'When I saw the sun for the first time.',
+      time: '12-14-01',
+      name: '成为小猫算经历吗',
+      introduce: '不能变成猫娘怎么办',
     },
     {
-      time: '2012-05-01',
-      name: '',
-      introduce: '111hgaojiahuo',
+      time: '2025-10-20',
+      name: '和喜欢的人在一起算经历吗',
+      introduce: '我愿意做你的主人我愿意做你的主人我愿意做你的主人我愿意做你的主人我愿意做你的主人',
     },
     {
-      time: '2025-05-01',
-      name: 'haojiahuo',
-      introduce: '111hg33aojiahuo',
+      time: '11-11-11',
+      name: '怎么还有呀',
+      introduce: '我编不出来惹',
     },
     {
-      time: '2022-05-01',
-      name: 'haojiahuo',
-      introduce: '111hgaojiahuo',
+      time: '2026-01-01',
+      name: '没有经历呜呜呜',
+      introduce: '没有公司要我呜呜呜',
     },
     {
       time: '2026-05-01',
-      name: 'haojiahuo',
-      introduce: '111hgaojiahuo',
+      name: '我会努力的呜呜',
+      introduce: '给我一个机会呜呜呜',
     },
   ], [])
 
