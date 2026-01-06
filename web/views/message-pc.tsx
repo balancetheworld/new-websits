@@ -2,89 +2,128 @@
 
 import type React from 'react'
 import { Heart, Send, ThumbsUp } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { TbGhost2 } from 'react-icons/tb'
 import { useScrollAnimation } from '@/hooks/use-scroll-animation'
+import { messageApi, type Message } from '@/services/api'
 import './message-pc.scss'
 
-interface Message {
-  id: number
-  name: string
-  content: string
-  timestamp: string
-  likes: number
-  dislikes: number
-  love: number
+// 格式化时间显示（自动转换为本地时间）
+function formatTimestamp(timestamp: string) {
+  if (!timestamp)
+    return ''
+
+  try {
+    const date = new Date(timestamp)
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    const hours = String(date.getHours()).padStart(2, '0')
+    const minutes = String(date.getMinutes()).padStart(2, '0')
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`
+  }
+  catch {
+    return timestamp
+  }
 }
 
 export default function GuestbookSection() {
   const { ref, isVisible } = useScrollAnimation()
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
 
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 1,
-      name: 'Mob',
-      content: '正在努力开发服务端中...',
-      timestamp: '2 hours ago',
-      likes: 3,
-      dislikes: 0,
-      love: 5,
-    },
-    {
-      id: 2,
-      name: 'JoJo',
-      content: '有什么建议和意见都可以私信告诉我哦，十分感谢！',
-      timestamp: '1 day ago',
-      likes: 1,
-      dislikes: 0,
-      love: 2,
-    },
-  ])
+  const [messages, setMessages] = useState<Message[]>([])
+
+  // 从后端获取留言
+  const fetchMessages = async () => {
+    const data = await messageApi.getAllMessages()
+    setMessages(data)
+  }
+
+  // 组件挂载时获取留言
+  useEffect(() => {
+    fetchMessages()
+  }, [])
 
   const [name, setName] = useState('')
   const [content, setContent] = useState('')
 
   /** 点击点赞 */
-  const handleLike = (id: number) => {
-    setMessages(prev =>
-      prev.map(msg => msg.id === id ? { ...msg, likes: msg.likes + 1 } : msg),
-    )
+  const handleLike = async (id: number) => {
+    const updatedMessage = await messageApi.likeMessage(id)
+    if (updatedMessage) {
+      setMessages(prev =>
+        prev.map(msg => msg.id === id ? updatedMessage : msg),
+      )
+    }
   }
 
   /** 点击点踩 */
-  const handleDislike = (id: number) => {
-    setMessages(prev =>
-      prev.map(msg => msg.id === id ? { ...msg, dislikes: msg.dislikes + 1 } : msg),
-    )
+  const handleDislike = async (id: number) => {
+    const updatedMessage = await messageApi.dislikeMessage(id)
+    if (updatedMessage) {
+      setMessages(prev =>
+        prev.map(msg => msg.id === id ? updatedMessage : msg),
+      )
+    }
   }
 
-  /** 点击点踩 */
-  const handleLove = (id: number) => {
-    setMessages(prev =>
-      prev.map(msg => msg.id === id ? { ...msg, love: msg.love + 1 } : msg),
-    )
+  /** 点击爱心 */
+  const handleLove = async (id: number) => {
+    const updatedMessage = await messageApi.loveMessage(id)
+    if (updatedMessage) {
+      setMessages(prev =>
+        prev.map(msg => msg.id === id ? updatedMessage : msg),
+      )
+    }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!name.trim() || !content.trim())
       return
 
-    const newMessage: Message = {
-      id: Math.max(...messages.map(m => m.id), 0) + 1,
-      name,
-      content,
-      timestamp: 'just now',
-      likes: 0,
-      dislikes: 0,
-      love: 0,
+    const newMessage = await messageApi.createMessage(name.trim(), content.trim())
+
+    if (newMessage) {
+      // 立即将新消息添加到列表顶部
+      setMessages(prev => [newMessage, ...prev])
+      setName('')
+      setContent('')
+    }
+    else {
+      console.error('提交失败')
+    }
+  }
+
+  // 阻止评论区域滚动事件冒泡到页面
+  useEffect(() => {
+    const container = scrollContainerRef.current
+    if (!container)
+      return
+
+    const handleWheel = (e: WheelEvent) => {
+      const { scrollTop, scrollHeight, clientHeight } = container
+
+      // 判断是否在顶部或底部
+      const isAtTop = scrollTop === 0
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight
+
+      // 如果在顶部向上滚动或在底部向下滚动，阻止默认行为
+      if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
     }
 
-    setMessages([newMessage, ...messages])
-    setName('')
-    setContent('')
-  }
+    // 使用原生事件监听器，{ passive: false } 允许 preventDefault
+    container.addEventListener('wheel', handleWheel, { passive: false } as AddEventListenerOptions)
+
+    return () => {
+      container.removeEventListener('wheel', handleWheel)
+    }
+  }, [])
 
   return (
     <section
@@ -148,13 +187,13 @@ export default function GuestbookSection() {
 
         {/* 留言列表 */}
         <div className="w-1/3">
-          <div className="h-full overflow-y-auto custom-scrollbar pr-2">
+          <div ref={scrollContainerRef} className="h-full overflow-y-auto custom-scrollbar pr-2">
             <div className="space-y-3 sm:space-y-4">
               {messages.map((message, index) => (
                 <div
                   key={message.id}
-                  className={`p-4 sm:p-6 bg-card rounded-2xl border border-border 
-                    hover:border-primary/50 transition-all duration-1000 
+                  className={`p-4 sm:p-6 bg-card rounded-2xl border border-border
+                    hover:border-primary/50 transition-all duration-1000
                     break-words whitespace-pre-wrap
                     ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
                   `}
@@ -165,7 +204,7 @@ export default function GuestbookSection() {
                       {message.name}
                     </h3>
                     <span className="text-xs sm:text-sm font-custom text-muted-foreground">
-                      {message.timestamp}
+                      {formatTimestamp(message.timestamp)}
                     </span>
                   </div>
 

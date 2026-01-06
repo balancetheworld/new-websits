@@ -2,52 +2,66 @@
 
 import type React from 'react'
 
+import type { Message } from '@/services/api'
 import { Send } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useScrollAnimation } from '@/hooks/use-scroll-animation'
+import { messageApi } from '@/services/api'
 
-interface Message {
-  id: number
-  name: string
-  content: string
-  timestamp: string
+// 格式化时间显示（自动转换为本地时间）
+function formatTimestamp(timestamp: string) {
+  if (!timestamp)
+    return ''
+
+  try {
+    const date = new Date(timestamp)
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    const hours = String(date.getHours()).padStart(2, '0')
+    const minutes = String(date.getMinutes()).padStart(2, '0')
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`
+  }
+  catch {
+    return timestamp
+  }
 }
 
 export default function GuestbookSection() {
   const { ref, isVisible } = useScrollAnimation()
 
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 1,
-      name: 'Alice',
-      content: 'Great portfolio! Love your design sense.',
-      timestamp: '2 hours ago',
-    },
-    {
-      id: 2,
-      name: 'Bob',
-      content: 'Impressive projects. Would love to collaborate!',
-      timestamp: '1 day ago',
-    },
-  ])
+  const [messages, setMessages] = useState<Message[]>([])
+
+  // 从后端获取留言
+  const fetchMessages = async () => {
+    const data = await messageApi.getAllMessages()
+    setMessages(data)
+  }
+
+  // 组件挂载时获取留言
+  useEffect(() => {
+    fetchMessages()
+  }, [])
+
   const [name, setName] = useState('')
   const [content, setContent] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!name.trim() || !content.trim())
       return
 
-    const newMessage: Message = {
-      id: Math.max(...messages.map(m => m.id), 0) + 1,
-      name,
-      content,
-      timestamp: 'just now',
-    }
+    const newMessage = await messageApi.createMessage(name.trim(), content.trim())
 
-    setMessages([newMessage, ...messages])
-    setName('')
-    setContent('')
+    if (newMessage) {
+      setMessages([newMessage, ...messages])
+      setName('')
+      setContent('')
+    }
+    else {
+      console.error('提交失败')
+    }
   }
 
   return (
@@ -76,13 +90,15 @@ export default function GuestbookSection() {
             type="text"
             placeholder="Your name"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={e => setName(e.target.value.slice(0, 10))}
+            maxLength={10}
             className="w-full mb-4 px-3 sm:px-4 py-2 rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary text-sm sm:text-base"
           />
           <textarea
             placeholder="Write your message..."
             value={content}
-            onChange={e => setContent(e.target.value)}
+            onChange={e => setContent(e.target.value.slice(0, 100))}
+            maxLength={100}
             rows={4}
             className="w-full mb-4 px-3 sm:px-4 py-2 rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary resize-none text-sm sm:text-base"
           />
@@ -107,9 +123,11 @@ export default function GuestbookSection() {
             >
               <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
                 <h3 className="font-bold text-base sm:text-lg">{message.name}</h3>
-                <span className="text-xs sm:text-sm text-muted-foreground">{message.timestamp}</span>
+                <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">{formatTimestamp(message.timestamp)}</span>
               </div>
-              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">{message.content}</p>
+              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed break-words whitespace-pre-wrap">
+                {message.content}
+              </p>
             </div>
           ))}
         </div>

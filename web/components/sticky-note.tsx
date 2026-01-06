@@ -36,7 +36,8 @@ export default function StickyNote({
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
   const bgColor = colorMap[color] || color
   const { ref, isVisible } = useScrollAnimation()
-
+  useEffect(() => {
+  }, [isVisible])
   const convertToPx = (val: number | string, parentSize: number) => {
     if (typeof val === 'number')
       return val
@@ -134,6 +135,8 @@ export default function StickyNote({
       className={`w-[8vw] max-w-30 min-w-22 h-[8vw] max-h-30 min-h-22 p-4 flex items-center justify-center  animated-box pl-5
           ${isDragging ? 'dragging' : ''}
           ${isVisible ? 'animated-trigger opacity-100 ' : 'animated-initial opacity-0'} `}
+      data-visible={isVisible}
+      data-text={String(children || initialText).slice(0, 10)}
     >
       <div className="flex items-center justify-center w-full h-full text-xl font-custom">
         {children || initialText}

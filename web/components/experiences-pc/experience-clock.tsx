@@ -25,7 +25,7 @@ function Experience() {
     {
       time: '2025-10-20',
       name: '和喜欢的人在一起算经历吗',
-      introduce: '我愿意做你的主人我愿意做你的主人我愿意做你的主人我愿意做你的主人我愿意做你的主人',
+      introduce: '我愿意做你的主人我愿意做你的主人我愿意做你的主人',
     },
     {
       time: '11-11-11',
@@ -145,6 +145,10 @@ function Experience() {
     clockRotate(offset * 60)
   }, [offset])
 
+  // 计算箭头的禁用状态
+  const isAtFirst = offset === maxOffset
+  const isAtLast = offset === minOffset
+
   // 渲染卡片列表
   const showEXList = () => {
     return EXList.map((item, index) => (
@@ -166,14 +170,22 @@ function Experience() {
       {/* 向上按钮 - 使用 global.css 变量 + 交互样式 */}
       <FaChevronUp
         size={60}
-        className="absolute top-[10%] left-[18%] z-50 text-[var(--color-foreground)] hover:text-[var(--color-primary)] cursor-pointer transition-colors duration-300"
-        onClick={slideToPrev}
+        className={`absolute top-[10%] left-[18%] z-50 transition-colors duration-300 ${
+          isAtFirst
+            ? 'text-[var(--color-muted)] cursor-not-allowed'
+            : 'text-[var(--color-foreground)] hover:text-[var(--color-primary)] cursor-pointer'
+        }`}
+        onClick={isAtFirst ? undefined : slideToPrev}
       />
       {/* 向下按钮 */}
       <FaChevronDown
         size={60}
-        className="absolute bottom-[10%] left-[18%] z-50 text-[var(--color-foreground)] hover:text-[var(--color-primary)] cursor-pointer transition-colors duration-300"
-        onClick={slideToNext}
+        className={`absolute bottom-[10%] left-[18%] z-50 transition-colors duration-300 ${
+          isAtLast
+            ? 'text-[var(--color-muted)] cursor-not-allowed'
+            : 'text-[var(--color-foreground)] hover:text-[var(--color-primary)] cursor-pointer'
+        }`}
+        onClick={isAtLast ? undefined : slideToNext}
       />
 
       {/* 卡片内容容器 */}
